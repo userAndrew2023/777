@@ -1,18 +1,20 @@
+import json
 import threading
 import time
 
 import requests
 
 import main
-import main2
 
 
 def send_to_public():
     while True:
-        requests.post("http://192.168.0.106:5000/dictSend", json=main.dict_)
-        requests.post("http://192.168.0.106:5000/dealsSend", json=main2.deals)
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'application/json'
+        }
+        requests.post("http://127.0.0.1:5000/dictSend", data=json.dumps(main.dict_), headers=headers)
         time.sleep(5)
 
 threading.Thread(target=send_to_public).start()
 threading.Thread(target=main.main).start()
-threading.Thread(target=main2.tracking).start()
